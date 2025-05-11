@@ -1,0 +1,37 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.error-msg {
+    font-size: 16px;
+    color: red;
+}

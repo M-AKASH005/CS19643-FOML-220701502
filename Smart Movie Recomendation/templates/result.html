@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations for {{ movie_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">🎬 Movie Recommender</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Top Movies Similar to <span class="text-primary">"{{ movie_name }}"</span></h2>
+
+        {% if searched_movie %}
+        <!-- Searched Movie Card -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card h-100 shadow border-primary">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ searched_movie['Poster_Link'] }}" 
+     style="max-width: 100%; height: auto; width: 100%; max-height: 500px; object-fit: contain;"
+     class="rounded-start" alt="Poster"
+     onerror="this.src='https://via.placeholder.com/400x600?text=No+Image';">
+</div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ searched_movie['Series_Title'] }} ({{ searched_movie['Released_Year'] }})</h4>
+                                <p><strong>Genre:</strong> {{ searched_movie['Genre'] }}</p>
+                                <p><strong>IMDb Rating:</strong> ⭐ {{ searched_movie['IMDB_Rating'] }} | <strong>Meta Score:</strong> {{ searched_movie['Meta_score'] }}</p>
+                                <p><strong>Certificate:</strong> {{ searched_movie['Certificate'] }} | <strong>Runtime:</strong> {{ searched_movie['Runtime'] }}</p>
+                                <p><strong>Director:</strong> {{ searched_movie['Director'] }}</p>
+                                <p><strong>Stars:</strong> {{ searched_movie['Star1'] }}, {{ searched_movie['Star2'] }}, {{ searched_movie['Star3'] }}, {{ searched_movie['Star4'] }}</p>
+                                <p><strong>Votes:</strong> {{ searched_movie['No_of_Votes'] }} | <strong>Gross:</strong> {{ searched_movie['Gross'] }}</p>
+                                <p><strong>Overview:</strong> {{ searched_movie['Overview'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Recommended Movies Grid -->
+        <div class="row">
+            {% for movie in recommendations %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow">
+                    <img src="{{ movie['Poster_Link'] }}" class="card-img-top" alt="Poster"
+                         onerror="this.src='https://via.placeholder.com/300x450?text=No+Image';">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie['Series_Title'] }} ({{ movie['Released_Year'] }})</h5>
+                        <p><strong>Genre:</strong> {{ movie['Genre'] }}</p>
+                        <p><strong>IMDb Rating:</strong> ⭐ {{ movie['IMDB_Rating'] }}</p>
+                        <form method="POST" action="/recommend">
+                            <input type="hidden" name="movie_name" value="{{ movie['Series_Title'] }}">
+                            <button type="submit" class="btn btn-outline-success btn-sm">🔍 view</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="movieModal{{ loop.index }}" tabindex="-1" aria-labelledby="movieModalLabel{{ loop.index }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header bg-dark text-white">
+                            <h5 class="modal-title" id="movieModalLabel{{ loop.index }}">{{ movie['Series_Title'] }} ({{ movie['Released_Year'] }})</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column flex-md-row">
+                            <img src="{{ movie['Poster_Link'] }}" class="me-3 mb-3 mb-md-0" style="width: 250px;" onerror="this.src='https://via.placeholder.com/250x375?text=No+Image';">
+                            <div>
+                                <p><strong>Genre:</strong> {{ movie['Genre'] }}</p>
+                                <p><strong>Certificate:</strong> {{ movie['Certificate'] }} | <strong>Runtime:</strong> {{ movie['Runtime'] }}</p>
+                                <p><strong>IMDb Rating:</strong> ⭐ {{ movie['IMDB_Rating'] }} | <strong>Meta Score:</strong> {{ movie['Meta_score'] }}</p>
+                                <p><strong>Director:</strong> {{ movie['Director'] }}</p>
+                                <p><strong>Stars:</strong> {{ movie['Star1'] }}, {{ movie['Star2'] }}, {{ movie['Star3'] }}, {{ movie['Star4'] }}</p>
+                                <p><strong>Votes:</strong> {{ movie['No_of_Votes'] }} | <strong>Gross:</strong> {{ movie['Gross'] }}</p>
+                                <p><strong>Overview:</strong> {{ movie['Overview'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-secondary">🔙 Go Back</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
